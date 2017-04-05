@@ -10,13 +10,13 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    //array to store the percent of each trial
+    // array to store the percent of each trial
     private final double[] percents;
 
-    //time of trials
+    // time of trials
     private final int trials;
 
-    //total sites
+    // total sites
     private final double totoalSites;
 
     /**
@@ -29,32 +29,32 @@ public class PercolationStats {
             throw new java.lang.IllegalArgumentException();
         }
 
-        //initial variables
+        // initial variables
         percents = new double[trials];
         this.trials = trials;
         totoalSites = n * n;
 
 
-        //perform percolation process on each trial
+        // perform percolation process on each trial
         for (int i = 0; i < trials; i++) {
 
-            //create new instance of percolation
+            // create new instance of percolation
             Percolation perco = new Percolation(n);
 
             int randomRow = 0;
             int randomCol = 0;
 
-            //while the system not percolate, keeping on opening new site
-            while (!perco.percolates()){
+            // while the system not percolate, keeping on opening new site
+            while (!perco.percolates()) {
 
-                //get random row and column
+                // get random row and column
                 randomRow = StdRandom.uniform(n) + 1;
                 randomCol = StdRandom.uniform(n) + 1;
 
                 perco.open(randomRow, randomCol);
             }
 
-            //store current percent into percents array
+            // store current percent into percents array
             percents[i] = perco.numberOfOpenSites() / totoalSites;
 
         }
@@ -74,14 +74,14 @@ public class PercolationStats {
      * @return stddev
      */
     public double stddev() {
-        if (trials == 1){
+        if (trials == 1) {
             return Double.NaN;
         }
         return StdStats.stddev(percents);
     }
 
     /**
-     * low  endpoint of 95% confidence interval
+     * low endpoint of 95% confidence interval
      * @return low endpoint
      */
     public double confidenceLo() {
@@ -102,7 +102,7 @@ public class PercolationStats {
      */
     public static void main(String[] args) {
 
-        //check arguments
+        // check arguments
         if (args.length != 2) {
             throw new java.lang.IllegalArgumentException();
         }

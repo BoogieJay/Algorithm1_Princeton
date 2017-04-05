@@ -10,22 +10,22 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    //size equals the parameter n
+    // size equals the parameter n
     private final int size;
 
-    //using int array to maintain the open/close state
+    // using int array to maintain the open/close state
     private int[] array;
 
-    //unionFind class with virtualHead and virtualTail
+    // unionFind class with virtualHead and virtualTail
     private final WeightedQuickUnionUF uf;
 
-    //unionFind class with only virtualTail to solve backwash problem
+    // unionFind class with only virtualTail to solve backwash problem
     private final WeightedQuickUnionUF ufNoTail;
 
-    //virtual head
+    // virtual head
     private final int virtualHead;
 
-    //virtual tail
+    // virtual tail
     private final int virtualTail;
 
     private int numOfOpens;
@@ -41,10 +41,10 @@ public class Percolation {
 
         size = n;
 
-        //array with n * n size, plus virtualHead(index0) and virtualTail(index n*n + 1)
+        // array with n * n size, plus virtualHead(index0) and virtualTail(index n*n + 1)
         array = new int[n * n + 2];
 
-        //two unionfind instances
+        // two unionfind instances
         uf = new WeightedQuickUnionUF(n * n + 2);
         ufNoTail = new WeightedQuickUnionUF(n * n + 1);
 
@@ -54,7 +54,7 @@ public class Percolation {
 
         numOfOpens = 0;
 
-        //virtualHead and virtualTail are initially open
+        // virtualHead and virtualTail are initially open
         array[virtualTail] = 1;
         array[virtualHead] = 1;
 
@@ -67,7 +67,7 @@ public class Percolation {
      * @param col
      */
     public void open(int row, int col) {
-        //convert to 1d index
+        // convert to 1d index
         int index = xyTo1D(row, col);
 
         // if site already open, return
@@ -75,24 +75,24 @@ public class Percolation {
             return;
         }
 
-        //open the site
+        // open the site
         array[index] = 1;
 
-        //adding number of open site
+        // adding number of open site
         numOfOpens++;
 
-        //if site is on the top row, connect it to the virtualHead
+        // if site is on the top row, connect it to the virtualHead
         if (row == 1) {
             uf.union(index, virtualHead);
             ufNoTail.union(index, virtualHead);
         }
 
-        //if site is on the bottom row, connect it to the virtualTail
+        // if site is on the bottom row, connect it to the virtualTail
         if (row == size) {
             uf.union(index, virtualTail);
         }
 
-        //connect to its neighbor
+        // connect to its neighbor
         connectNeighbor(row, col);
 
     }
@@ -160,13 +160,13 @@ public class Percolation {
 
         int index = xyTo1D(row, col);
 
-        //calculate the indexs of its neighbor in 1D representation
+        // calculate the indexs of its neighbor in 1D representation
         int up = index - size;
         int left = index - 1;
         int down = index + size;
         int right = index + 1;
 
-        //connect up
+        // connect up
         if (row - 1 >= 1 && isOpen(row - 1, col)) {
 
             if (!ufNoTail.connected(index, up)) {
@@ -175,7 +175,7 @@ public class Percolation {
             }
         }
 
-        //connect left
+        // connect left
         if (col - 1 >= 1 && isOpen(row, col - 1)) {
 
             if (!ufNoTail.connected(index, left)) {
@@ -184,7 +184,7 @@ public class Percolation {
             }
         }
 
-        //connect down
+        // connect down
         if (row + 1 <= size && isOpen(row + 1, col)) {
 
             if (!ufNoTail.connected(index, down)) {
@@ -193,7 +193,7 @@ public class Percolation {
             }
         }
 
-        //connect right
+        // connect right
         if (col + 1 <= size && isOpen(row, col + 1)) {
 
             if (!ufNoTail.connected(index, right)) {
